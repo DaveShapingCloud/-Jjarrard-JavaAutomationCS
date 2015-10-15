@@ -1,0 +1,57 @@
+package AutomationFramework;
+
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class FirstTestCase {
+	public static void main(String args[]) {
+	}
+
+	private WebDriver driver;
+	private String baseUrl;
+	private StringBuffer verificationErrors = new StringBuffer();
+
+	@Before
+	public void setUp() throws Exception {
+		driver = new FirefoxDriver();
+		setBaseUrl("https://appstaging.callsquad.com/");
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	}
+
+	@Test
+	public void testAdminLogin() throws Exception {
+		driver.get("https://appstaging.callsquad.com/#/login");
+		driver.findElement(By.id("inputEmail")).clear();
+		driver.findElement(By.id("inputEmail")).sendKeys("james.jarrard@shapingcloud.com");
+		driver.findElement(By.id("inputPassword")).clear();
+		driver.findElement(By.id("inputPassword")).sendKeys("password");
+		driver.findElement(By.cssSelector("button.btn.btn-default")).click();
+		driver.findElement(By.linkText("James Jarrard")).click();
+		driver.findElement(By.linkText("Logout")).click();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		// driver.quit();
+		String verificationErrorString = verificationErrors.toString();
+		if (!"".equals(verificationErrorString)) {
+			fail(verificationErrorString);
+		}
+	}
+
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
+}
